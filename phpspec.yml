@@ -1,0 +1,4 @@
+suites:
+    main:
+        namespace: Triga\Menu
+        psr4_prefix: Triga\Menu
