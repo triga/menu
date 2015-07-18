@@ -2,13 +2,15 @@
 
 use Prophecy\Argument;
 use PhpSpec\ObjectBehavior;
+use Triga\Menu\Item\MenuItem;
+use Triga\Menu\Item\RootMenuItem;
 use Illuminate\Routing\UrlGenerator;
 
 class MenuSpec extends ObjectBehavior
 {
     function let(UrlGenerator $urlGenerator)
     {
-        $this->beConstructedWith($urlGenerator);
+        $this->beConstructedWith($urlGenerator, new RootMenuItem($urlGenerator->getWrappedObject()));
     }
 
     function it_is_initializable()
@@ -23,10 +25,10 @@ class MenuSpec extends ObjectBehavior
         $this->addRoute('foo');
 
         $expected = [
-            'foo' => 'http://foo.com',
+            'foo' => new MenuItem('http://foo.com'),
         ];
 
-        $this->getParsedUrls()->shouldBe($expected);
+        $this->getItems()->shouldBeLike($expected);
     }
 
     function it_should_register_routes_with_params(UrlGenerator $urlGenerator)
@@ -36,10 +38,10 @@ class MenuSpec extends ObjectBehavior
         $this->addRoute('foo', ['name' => 'fen']);
 
         $expected = [
-            'foo' => 'http://foo.com/fen',
+            'foo' => new MenuItem('http://foo.com/fen'),
         ];
 
-        $this->getParsedUrls()->shouldBe($expected);
+        $this->getItems()->shouldBeLike($expected);
     }
 
     function it_should_register_urls()
@@ -47,9 +49,9 @@ class MenuSpec extends ObjectBehavior
         $this->addUrl('bar', 'http://bar.com');
 
         $expected = [
-            'bar' => 'http://bar.com',
+            'bar' => new MenuItem('http://bar.com'),
         ];
 
-        $this->getParsedUrls()->shouldBe($expected);
+        $this->getItems()->shouldBeLike($expected);
     }
 }

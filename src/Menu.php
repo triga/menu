@@ -1,7 +1,13 @@
 <?php namespace Triga\Menu;
 
+use Triga\Menu\Item\RootMenuItem;
 use Illuminate\Routing\UrlGenerator;
 
+/**
+ * Class responsible for building menu's.
+ *
+ * @package Triga\Menu
+ */
 class Menu
 {
 
@@ -15,23 +21,48 @@ class Menu
      */
     protected $urlGenerator;
 
-    public function __construct(UrlGenerator $urlGenerator)
+    /**
+     * @var Item\MenuItem
+     */
+    protected $rootMenuItem;
+
+    public function __construct(UrlGenerator $urlGenerator, RootMenuItem $rootMenuItem)
     {
         $this->urlGenerator = $urlGenerator;
+        $this->rootMenuItem = $rootMenuItem;
     }
 
+    /**
+     * Registers a menu item a route name.
+     *
+     * @param $routeName
+     * @param array $params
+     * @return Item\MenuItem
+     */
     public function addRoute($routeName, array $params = [])
     {
-        $this->items[$routeName] = $this->urlGenerator->route($routeName, $params);
+        return $this->rootMenuItem->addRoute($routeName, $params);
     }
 
+    /**
+     * Registers a menu item using a URL.
+     *
+     * @param $name
+     * @param $url
+     * @return Item\MenuItem
+     */
     public function addUrl($name, $url)
     {
-        $this->items[$name] = $url;
+        return $this->rootMenuItem->addUrl($name, $url);
     }
 
-    public function getParsedUrls()
+    /**
+     * Returns registered menu items.
+     *
+     * @return Item\MenuItem[]
+     */
+    public function getItems()
     {
-        return $this->items;
+        return $this->rootMenuItem->getItems();
     }
 }
