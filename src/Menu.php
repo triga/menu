@@ -26,7 +26,7 @@ class Menu
      *
      * @var string
      */
-    protected $viewPath = 'triga';
+    protected $viewPath = 'triga.menu::menu';
 
     public function __construct(UrlGenerator $urlGenerator, RootMenuItem $rootMenuItem)
     {

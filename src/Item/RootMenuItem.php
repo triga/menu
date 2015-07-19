@@ -22,6 +22,8 @@ class RootMenuItem
      */
     protected $items = [];
 
+    protected $viewPath = 'triga.menu::item';
+
     /**
      * URL generator setter.
      *
@@ -78,5 +80,12 @@ class RootMenuItem
     public function getItems()
     {
         return $this->items;
+    }
+
+    public function render()
+    {
+        if (false === $this->hasItems()) {
+            return view($this->viewPath, ['item' => $this]);
+        }
     }
 }
