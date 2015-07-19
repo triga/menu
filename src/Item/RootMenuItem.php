@@ -2,6 +2,11 @@
 
 use Illuminate\Routing\UrlGenerator;
 
+/**
+ * Root menu item. Used as an aggregate and base item for other menu items.
+ *
+ * @package Triga\Menu\Item
+ */
 class RootMenuItem
 {
 
@@ -11,22 +16,43 @@ class RootMenuItem
     protected $urlGenerator;
 
     /**
+     * Registered items (children).
+     *
      * @var MenuItem[]
      */
     protected $items = [];
 
-    public function __construct(UrlGenerator $urlGenerator)
+    /**
+     * URL generator setter.
+     *
+     * @param UrlGenerator $urlGenerator
+     */
+    public function setUrlGenerator(UrlGenerator $urlGenerator)
     {
         $this->urlGenerator = $urlGenerator;
     }
 
-    public function addRoute($routeName, array $params = [])
+    /**
+     * Registers a route based on its name.
+     *
+     * @param string $routeName
+     * @param array $routeParams
+     * @return MenuItem
+     */
+    public function addRoute($routeName, array $routeParams = [])
     {
-        $this->items[$routeName] = new MenuItem($this->urlGenerator->route($routeName, $params));
+        $this->items[$routeName] = new MenuItem($this->urlGenerator->route($routeName, $routeParams));
 
         return $this->items[$routeName];
     }
 
+    /**
+     * Registers an URL.
+     *
+     * @param string $name
+     * @param string $url
+     * @return MenuItem
+     */
     public function addUrl($name, $url)
     {
         $this->items[$name] = new MenuItem($url);
@@ -34,6 +60,21 @@ class RootMenuItem
         return $this->items[$name];
     }
 
+    /**
+     * Returns true if the menu item has sub-items.
+     *
+     * @return bool
+     */
+    public function hasItems()
+    {
+        return (bool)count($this->items);
+    }
+
+    /**
+     * Returns sub-items.
+     *
+     * @return MenuItem[]
+     */
     public function getItems()
     {
         return $this->items;

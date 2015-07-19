@@ -17,19 +17,21 @@ class Menu
     protected $items;
 
     /**
-     * @var UrlGenerator
-     */
-    protected $urlGenerator;
-
-    /**
      * @var Item\MenuItem
      */
     protected $rootMenuItem;
 
+    /**
+     * Path to the main view file.
+     *
+     * @var string
+     */
+    protected $viewPath = 'triga';
+
     public function __construct(UrlGenerator $urlGenerator, RootMenuItem $rootMenuItem)
     {
-        $this->urlGenerator = $urlGenerator;
         $this->rootMenuItem = $rootMenuItem;
+        $this->rootMenuItem->setUrlGenerator($urlGenerator);
     }
 
     /**

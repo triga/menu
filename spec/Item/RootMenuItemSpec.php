@@ -2,22 +2,16 @@
 
 use Prophecy\Argument;
 use PhpSpec\ObjectBehavior;
-use Illuminate\Routing\UrlGenerator;
 
 class RootMenuItemSpec extends ObjectBehavior
 {
-    function let(UrlGenerator $urlGenerator)
-    {
-        $this->beConstructedWith($urlGenerator);
-    }
-
-    function it_is_initializable()
-    {
-        $this->shouldHaveType('Triga\Menu\Item\RootMenuItem');
-    }
 
     function it_should_register_nested_routes()
     {
+        $this->addUrl('foo', 'http://foo.bar');
+        $this->addUrl('bar', 'http://bar.baz')
+            ->addUrl('nested', 'http://lol.wat');
 
+        $this->getItems()->shouldHaveCount(2);
     }
 }

@@ -1,6 +1,11 @@
 <?php namespace Triga\Menu\Item;
 
-class MenuItem
+/**
+ * Menu item.
+ *
+ * @package Triga\Menu\Item
+ */
+class MenuItem extends RootMenuItem
 {
 
     /**
