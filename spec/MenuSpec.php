@@ -2,15 +2,13 @@
 
 use Prophecy\Argument;
 use PhpSpec\ObjectBehavior;
-use Triga\Menu\Item\MenuItem;
 use Triga\Menu\Item\RootMenuItem;
-use Illuminate\Routing\UrlGenerator;
 
 class MenuSpec extends ObjectBehavior
 {
-    function let(UrlGenerator $urlGenerator)
+    function let(RootMenuItem $rootMenuItem)
     {
-        $this->beConstructedWith($urlGenerator, new RootMenuItem($urlGenerator->getWrappedObject()));
+        $this->beConstructedWith($rootMenuItem);
     }
 
     function it_is_initializable()
@@ -18,40 +16,24 @@ class MenuSpec extends ObjectBehavior
         $this->shouldHaveType('Triga\Menu\Menu');
     }
 
-    function it_should_register_routes_by_names(UrlGenerator $urlGenerator)
+    function it_should_add_route(RootMenuItem $rootMenuItem)
     {
-        $urlGenerator->route('foo', [])->willReturn('http://foo.com');
+        $rootMenuItem->addRoute($routeName = 'foo', $params = ['foo' => 'bar'])->shouldBeCalled();
 
-        $this->addRoute('foo');
-
-        $expected = [
-            'foo' => new MenuItem('http://foo.com'),
-        ];
-
-        $this->getItems()->shouldBeLike($expected);
+        $this->addRoute($routeName, $params);
     }
 
-    function it_should_register_routes_with_params(UrlGenerator $urlGenerator)
+    function it_should_add_url(RootMenuItem $rootMenuItem)
     {
-        $urlGenerator->route('foo', ['name' => 'fen'])->willReturn('http://foo.com/fen');
+        $rootMenuItem->addUrl($routeName = 'foo', $url = 'http://lol.wut')->shouldBeCalled();
 
-        $this->addRoute('foo', ['name' => 'fen']);
-
-        $expected = [
-            'foo' => new MenuItem('http://foo.com/fen'),
-        ];
-
-        $this->getItems()->shouldBeLike($expected);
+        $this->addUrl($routeName, $url);
     }
 
-    function it_should_register_urls()
+    function it_should_return_items(RootMenuItem $rootMenuItem)
     {
-        $this->addUrl('bar', 'http://bar.com');
+        $rootMenuItem->getItems()->shouldBeCalled()->willReturn($expected = ['foo' => 'bar']);
 
-        $expected = [
-            'bar' => new MenuItem('http://bar.com'),
-        ];
-
-        $this->getItems()->shouldBeLike($expected);
+        $this->getItems()->shouldBe($expected);
     }
 }

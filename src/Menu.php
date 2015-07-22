@@ -1,7 +1,6 @@
 <?php namespace Triga\Menu;
 
 use Triga\Menu\Item\RootMenuItem;
-use Illuminate\Routing\UrlGenerator;
 
 /**
  * Class responsible for building menu's.
@@ -28,10 +27,9 @@ class Menu
      */
     protected $viewPath = 'triga.menu::menu';
 
-    public function __construct(UrlGenerator $urlGenerator, RootMenuItem $rootMenuItem)
+    public function __construct(RootMenuItem $rootMenuItem)
     {
         $this->rootMenuItem = $rootMenuItem;
-        $this->rootMenuItem->setUrlGenerator($urlGenerator);
     }
 
     /**
@@ -66,5 +64,27 @@ class Menu
     public function getItems()
     {
         return $this->rootMenuItem->getItems();
+    }
+
+    /**
+     * Sets the view path.
+     *
+     * @param string $viewPath
+     */
+    public function setViewPath($viewPath)
+    {
+        $this->viewPath = $viewPath;
+    }
+
+    /**
+     * Renders the view.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function render()
+    {
+        return view($this->viewPath, [
+            'items' => $this->rootMenuItem->getItems(),
+        ]);
     }
 }
