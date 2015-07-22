@@ -82,10 +82,19 @@ class RootMenuItem
         return $this->items;
     }
 
+    /**
+     * Renders the item's view.
+     *
+     * @return \Illuminate\View\View
+     */
     public function render()
     {
         if (false === $this->hasItems()) {
             return view($this->viewPath, ['item' => $this]);
         }
+
+        /**
+         * @todo Handle rendering sub-items
+         */
     }
 }
