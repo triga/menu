@@ -17,4 +17,9 @@ class MenuItem extends RootMenuItem
     {
         $this->url = $url;
     }
+
+    public function getUrl()
+    {
+        return $this->url;
+    }
 }
