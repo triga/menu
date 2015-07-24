@@ -3,6 +3,11 @@
 use Triga\Menu\Item\RootMenuItem;
 use Illuminate\Routing\UrlGenerator;
 
+/**
+ * Menu factory. Responsible for instantiating new instances of Menus.
+ *
+ * @package Triga\Menu
+ */
 class MenuFactory
 {
 
@@ -16,6 +21,11 @@ class MenuFactory
         $this->urlGenerator = $urlGenerator;
     }
 
+    /**
+     * Creates a new Menu instance.
+     *
+     * @return Menu
+     */
     public function make()
     {
         $rootMenuItem = new RootMenuItem;
