@@ -18,16 +18,16 @@ class MenuSpec extends ObjectBehavior
 
     function it_should_add_route(RootMenuItem $rootMenuItem)
     {
-        $rootMenuItem->addRoute($routeName = 'foo', $params = ['foo' => 'bar'])->shouldBeCalled();
+        $rootMenuItem->addRoute($routeName = 'foo', $label = 'label', $params = ['foo' => 'bar'], null)->shouldBeCalled();
 
-        $this->addRoute($routeName, $params);
+        $this->addRoute($routeName, $label, $params, null);
     }
 
     function it_should_add_url(RootMenuItem $rootMenuItem)
     {
-        $rootMenuItem->addUrl($routeName = 'foo', $url = 'http://lol.wut')->shouldBeCalled();
+        $rootMenuItem->addUrl($routeName = 'foo', $url = 'http://lol.wut', $label = 'label', null)->shouldBeCalled();
 
-        $this->addUrl($routeName, $url);
+        $this->addUrl($routeName, $url, $label, null);
     }
 
     function it_should_return_items(RootMenuItem $rootMenuItem)

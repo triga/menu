@@ -5,15 +5,16 @@ use Prophecy\Argument;
 
 class MenuItemSpec extends ObjectBehavior
 {
-    function it_is_initializable()
-    {
-        $this->shouldHaveType('Triga\Menu\Item\MenuItem');
-    }
-
     function it_should_have_working_getters()
     {
+        $this->beConstructedWith($url = 'http://foo.bar', $label = 'Label', $icon = 'fa-dashboard');
+
+        $this->getUrl()->shouldBe($url);
+        $this->getLabel()->shouldBe($label);
+        $this->getIcon()->shouldBe($icon);
+
         /**
-         * @todo Test URL, label and icon. What about the "active" class? Think about nested items.
+         * @todo What about the "active" class? Think about nested items.
          */
     }
 }

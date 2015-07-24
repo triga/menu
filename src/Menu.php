@@ -35,25 +35,29 @@ class Menu
     /**
      * Registers a menu item a route name.
      *
-     * @param $routeName
+     * @param string $routeName
+     * @param string $label
      * @param array $params
+     * @param null $icon
      * @return Item\MenuItem
      */
-    public function addRoute($routeName, array $params = [])
+    public function addRoute($routeName, $label, array $params = [], $icon = null)
     {
-        return $this->rootMenuItem->addRoute($routeName, $params);
+        return $this->rootMenuItem->addRoute($routeName, $label, $params, $icon);
     }
 
     /**
      * Registers a menu item using a URL.
      *
-     * @param $name
-     * @param $url
+     * @param string $name
+     * @param string $url
+     * @param string $label
+     * @param null $icon
      * @return Item\MenuItem
      */
-    public function addUrl($name, $url)
+    public function addUrl($name, $url, $label, $icon = null)
     {
-        return $this->rootMenuItem->addUrl($name, $url);
+        return $this->rootMenuItem->addUrl($name, $url, $label, $icon);
     }
 
     /**

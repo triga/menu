@@ -38,12 +38,14 @@ class RootMenuItem
      * Registers a route based on its name.
      *
      * @param string $routeName
+     * @param string $label
      * @param array $routeParams
+     * @param string|null $icon
      * @return MenuItem
      */
-    public function addRoute($routeName, array $routeParams = [])
+    public function addRoute($routeName, $label, array $routeParams = [], $icon = null)
     {
-        $this->items[$routeName] = new MenuItem($this->urlGenerator->route($routeName, $routeParams));
+        $this->items[$routeName] = new MenuItem($this->urlGenerator->route($routeName, $routeParams), $label, $icon);
 
         return $this->items[$routeName];
     }
@@ -53,11 +55,13 @@ class RootMenuItem
      *
      * @param string $name
      * @param string $url
+     * @param string $label
+     * @param string|null $icon
      * @return MenuItem
      */
-    public function addUrl($name, $url)
+    public function addUrl($name, $url, $label, $icon = null)
     {
-        $this->items[$name] = new MenuItem($url);
+        $this->items[$name] = new MenuItem($url, $label, $icon);
 
         return $this->items[$name];
     }

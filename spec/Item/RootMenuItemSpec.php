@@ -14,9 +14,9 @@ class RootMenuItemSpec extends ObjectBehavior
 
     function it_should_register_nested_routes()
     {
-        $this->addUrl('foo', 'http://foo.bar');
-        $this->addUrl('bar', 'http://bar.baz')
-            ->addUrl('nested', 'http://lol.wat');
+        $this->addUrl('foo', 'http://foo.bar', 'foo');
+        $this->addUrl('bar', 'http://bar.baz', 'bar')
+            ->addUrl('nested', 'http://lol.wat', 'baz');
 
         $this->getItems()->shouldHaveCount(2);
     }
@@ -25,10 +25,10 @@ class RootMenuItemSpec extends ObjectBehavior
     {
         $urlGenerator->route('foo', [])->willReturn('http://foo.com');
 
-        $this->addRoute('foo');
+        $this->addRoute('foo', 'label');
 
         $expected = [
-            'foo' => new MenuItem('http://foo.com'),
+            'foo' => new MenuItem('http://foo.com', 'label'),
         ];
 
         $this->getItems()->shouldBeLike($expected);
@@ -38,10 +38,10 @@ class RootMenuItemSpec extends ObjectBehavior
     {
         $urlGenerator->route('foo', ['name' => 'fen'])->willReturn('http://foo.com/fen');
 
-        $this->addRoute('foo', ['name' => 'fen']);
+        $this->addRoute('foo', 'label', ['name' => 'fen']);
 
         $expected = [
-            'foo' => new MenuItem('http://foo.com/fen'),
+            'foo' => new MenuItem('http://foo.com/fen', 'label'),
         ];
 
         $this->getItems()->shouldBeLike($expected);
@@ -49,10 +49,10 @@ class RootMenuItemSpec extends ObjectBehavior
 
     function it_should_register_urls()
     {
-        $this->addUrl('bar', 'http://bar.com');
+        $this->addUrl('bar', 'http://bar.com', 'label');
 
         $expected = [
-            'bar' => new MenuItem('http://bar.com'),
+            'bar' => new MenuItem('http://bar.com', 'label'),
         ];
 
         $this->getItems()->shouldBeLike($expected);
