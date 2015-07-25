@@ -22,7 +22,19 @@ class RootMenuItem
      */
     protected $items = [];
 
+    /**
+     * Base view path for an item without children.
+     *
+     * @var string
+     */
     protected $viewPath = 'triga.menu::item';
+
+    /**
+     * View path for an item which has children.
+     *
+     * @var string
+     */
+    protected $viewPathWithChildren = 'triga.menu::itemWithChildren';
 
     /**
      * URL generator setter.
@@ -93,12 +105,12 @@ class RootMenuItem
      */
     public function render()
     {
-        if (false === $this->hasItems()) {
-            return view($this->viewPath, ['item' => $this]);
+        $viewPath = $this->viewPath;
+
+        if (true === $this->hasItems()) {
+            $viewPath = $this->viewPathWithChildren;
         }
 
-        /**
-         * @todo Handle rendering sub-items
-         */
+        return view($viewPath, ['item' => $this]);
     }
 }

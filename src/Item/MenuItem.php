@@ -29,11 +29,19 @@ class MenuItem extends RootMenuItem
      */
     protected $icon;
 
+    /**
+     * Item's identifier. Used by the template's JS to toggle nested menu items.
+     *
+     * @var string
+     */
+    protected $id;
+
     public function __construct($url, $label, $icon = null)
     {
         $this->url = $url;
         $this->label = $label;
         $this->icon = $icon;
+        $this->id = md5($url);
     }
 
     /**
@@ -58,5 +66,13 @@ class MenuItem extends RootMenuItem
     public function getIcon()
     {
         return $this->icon;
+    }
+
+    /**
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 }

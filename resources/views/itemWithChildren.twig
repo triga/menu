@@ -1,0 +1,8 @@
+<li>
+    <a href="javascript:;" data-toggle="collapse" data-target="#{{ item.getId() }}"><i class="fa fa-fw"></i> {{ item.getLabel() }} <i class="fa fa-fw fa-caret-down"></i></a>
+    <ul id="{{ item.getId() }}" class="collapse">
+        {% for child in item.getItems() %}
+            {{ child.render() }}
+        {% endfor %}
+    </ul>
+</li>
