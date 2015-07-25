@@ -58,6 +58,7 @@ class RootMenuItem
     public function addRoute($routeName, $label, array $routeParams = [], $icon = null)
     {
         $this->items[$routeName] = new MenuItem($this->urlGenerator->route($routeName, $routeParams), $label, $icon);
+        $this->items[$routeName]->setUrlGenerator($this->urlGenerator);
 
         return $this->items[$routeName];
     }
@@ -74,6 +75,7 @@ class RootMenuItem
     public function addUrl($name, $url, $label, $icon = null)
     {
         $this->items[$name] = new MenuItem($url, $label, $icon);
+        $this->items[$name]->setUrlGenerator($this->urlGenerator);
 
         return $this->items[$name];
     }
