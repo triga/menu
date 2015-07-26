@@ -75,4 +75,9 @@ class MenuItem extends RootMenuItem
     {
         return $this->id;
     }
+
+    public function isActive()
+    {
+        return $this->getContainer()->getCurrentUrl() === $this->url;
+    }
 }

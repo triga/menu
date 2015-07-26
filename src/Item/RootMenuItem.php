@@ -1,6 +1,6 @@
 <?php namespace Triga\Menu\Item;
 
-use Illuminate\Routing\UrlGenerator;
+use Triga\Menu\Menu;
 
 /**
  * Root menu item. Used as an aggregate and base item for other menu items.
@@ -9,11 +9,6 @@ use Illuminate\Routing\UrlGenerator;
  */
 class RootMenuItem
 {
-
-    /**
-     * @var UrlGenerator
-     */
-    protected $urlGenerator;
 
     /**
      * Registered items (children).
@@ -37,14 +32,9 @@ class RootMenuItem
     protected $viewPathWithChildren = 'triga.menu::itemWithChildren';
 
     /**
-     * URL generator setter.
-     *
-     * @param UrlGenerator $urlGenerator
+     * @var Menu
      */
-    public function setUrlGenerator(UrlGenerator $urlGenerator)
-    {
-        $this->urlGenerator = $urlGenerator;
-    }
+    protected $container;
 
     /**
      * Registers a route based on its name.
@@ -57,8 +47,11 @@ class RootMenuItem
      */
     public function addRoute($routeName, $label, array $routeParams = [], $icon = null)
     {
-        $this->items[$routeName] = new MenuItem($this->urlGenerator->route($routeName, $routeParams), $label, $icon);
-        $this->items[$routeName]->setUrlGenerator($this->urlGenerator);
+        $container = $this->getContainer();
+        $route = $container->getUrlGenerator()->route($routeName, $routeParams);
+
+        $this->items[$routeName] = (new MenuItem($route, $label, $icon))
+            ->setContainer($container);
 
         return $this->items[$routeName];
     }
@@ -74,8 +67,8 @@ class RootMenuItem
      */
     public function addUrl($name, $url, $label, $icon = null)
     {
-        $this->items[$name] = new MenuItem($url, $label, $icon);
-        $this->items[$name]->setUrlGenerator($this->urlGenerator);
+        $this->items[$name] = (new MenuItem($url, $label, $icon))
+            ->setContainer($this->getContainer());
 
         return $this->items[$name];
     }
@@ -114,5 +107,28 @@ class RootMenuItem
         }
 
         return view($viewPath, ['item' => $this]);
+    }
+
+    /**
+     * Container setter.
+     *
+     * @param Menu $container
+     * @return $this
+     */
+    public function setContainer(Menu $container)
+    {
+        $this->container = $container;
+
+        return $this;
+    }
+
+    /**
+     * Returns the container.
+     *
+     * @return Menu
+     */
+    public function getContainer()
+    {
+        return $this->container;
     }
 }

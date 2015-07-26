@@ -1,5 +1,6 @@
 <?php namespace Triga\Menu;
 
+use Illuminate\Http\Request;
 use Triga\Menu\Item\RootMenuItem;
 use Illuminate\Routing\UrlGenerator;
 
@@ -16,9 +17,15 @@ class MenuFactory
      */
     protected $urlGenerator;
 
-    public function __construct(UrlGenerator $urlGenerator)
+    /**
+     * @var Request
+     */
+    protected $request;
+
+    public function __construct(UrlGenerator $urlGenerator, Request $request)
     {
         $this->urlGenerator = $urlGenerator;
+        $this->request = $request;
     }
 
     /**
@@ -29,8 +36,13 @@ class MenuFactory
     public function make()
     {
         $rootMenuItem = new RootMenuItem;
-        $rootMenuItem->setUrlGenerator($this->urlGenerator);
 
-        return new Menu($rootMenuItem);
+        $menu = (new Menu($rootMenuItem))
+            ->setUrlGenerator($this->urlGenerator)
+            ->setCurrentUrl($this->request->url());
+
+        $rootMenuItem->setContainer($menu);
+
+        return $menu;
     }
 }
