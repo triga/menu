@@ -1,15 +1,17 @@
 <?php namespace spec\Triga\Menu\Item;
 
-use Illuminate\Routing\UrlGenerator;
+use Triga\Menu\Menu;
 use Prophecy\Argument;
 use PhpSpec\ObjectBehavior;
-use Triga\Menu\Item\MenuItem;
+use Illuminate\Routing\UrlGenerator;
 
 class RootMenuItemSpec extends ObjectBehavior
 {
-    function let(UrlGenerator $urlGenerator)
+    function let(Menu $container, UrlGenerator $urlGenerator)
     {
-        $this->setUrlGenerator($urlGenerator);
+        $container->getUrlGenerator()->willReturn($urlGenerator);
+
+        $this->setContainer($container);
     }
 
     function it_should_register_nested_routes()
@@ -25,23 +27,23 @@ class RootMenuItemSpec extends ObjectBehavior
     {
         $urlGenerator->route('foo', [])->willReturn('http://foo.com');
 
-        $this->addRoute('foo', 'label');
+        $menuItem = $this->addRoute('foo', 'label');
 
         $expected = [
-            'foo' => new MenuItem('http://foo.com', 'label'),
+            'foo' => $menuItem,
         ];
 
-        $this->getItems()->shouldBeLike($expected);
+        $this->getItems()->shouldBe($expected);
     }
 
     function it_should_register_routes_with_params(UrlGenerator $urlGenerator)
     {
         $urlGenerator->route('foo', ['name' => 'fen'])->willReturn('http://foo.com/fen');
 
-        $this->addRoute('foo', 'label', ['name' => 'fen']);
+        $menuItem = $this->addRoute('foo', 'label', ['name' => 'fen']);
 
         $expected = [
-            'foo' => new MenuItem('http://foo.com/fen', 'label'),
+            'foo' => $menuItem,
         ];
 
         $this->getItems()->shouldBeLike($expected);
@@ -49,10 +51,10 @@ class RootMenuItemSpec extends ObjectBehavior
 
     function it_should_register_urls()
     {
-        $this->addUrl('bar', 'http://bar.com', 'label');
+        $menuItem = $this->addUrl('bar', 'http://bar.com', 'label');
 
         $expected = [
-            'bar' => new MenuItem('http://bar.com', 'label'),
+            'bar' => $menuItem,
         ];
 
         $this->getItems()->shouldBeLike($expected);
